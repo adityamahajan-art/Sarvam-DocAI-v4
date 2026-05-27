@@ -10,13 +10,13 @@
     --bg: #F9FAFB;
     --surface: #FFFFFF;
     --border: #E5E7EB;
-    --accent: #0056D2; /* Ignosis Primary Blue */
-    --accent-glow: rgba(0, 86, 210, 0.15);
+    --accent: #0056D2; 
+    --accent-glow: rgba(0, 86, 210, 0.2);
     --text: #111827;
     --text-muted: #6B7280;
     --tag-bg: #F3F4F6;
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    --shadow-hover: 0 10px 25px -5px rgba(0, 86, 210, 0.1), 0 8px 10px -6px rgba(0, 86, 210, 0.1);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -26,162 +26,137 @@
     min-height: 100vh;
     padding-bottom: 80px;
   }
-  /* Grid background */
   body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,86,210,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,86,210,0.03) 1px, transparent 1px);
-    background-size: 32px 32px;
-    pointer-events: none;
-    z-index: 0;
+    content: ''; position: fixed; inset: 0;
+    background-image: linear-gradient(rgba(0,86,210,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,86,210,0.03) 1px, transparent 1px);
+    background-size: 32px 32px; pointer-events: none; z-index: 0;
   }
   .main-wrapper { position: relative; z-index: 1; }
-  header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  
+  /* CSS Animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
   }
+  @keyframes activePulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 86, 210, 0.3); }
+    70% { box-shadow: 0 0 0 12px rgba(0, 86, 210, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 86, 210, 0); }
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Header */
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
   .logo-area { display: flex; align-items: center; gap: 12px; }
-  .logo-img { height: 28px; }
-  .logo-text { font-size: 20px; font-weight: 800; }
-  .expert-btn {
-    background: #111827;
-    color: white;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 10px 20px;
-    border-radius: 30px;
-    border: none;
-    cursor: pointer;
-  }
-  .page-header { max-width: 1080px; margin: 64px auto 0; text-align: center; }
-  .page-title { font-size: 40px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+  .logo-img { height: 40px; /* FIXED: Increased logo size for better balance */ }
+  .logo-text { font-size: 22px; font-weight: 800; border-left: 2px solid var(--border); padding-left: 12px; color: var(--text); }
+  .expert-btn { background: #111827; color: white; font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 30px; border: none; cursor: pointer; transition: transform 0.2s, background 0.2s; }
+  .expert-btn:hover { background: #1f2937; transform: translateY(-1px); }
+  
+  .page-header { max-width: 1080px; margin: 64px auto 0; text-align: center; animation: fadeInUp 0.6s ease-out forwards; }
+  .page-title { font-size: 44px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; }
   .page-title span { color: var(--accent); }
-  .page-sub { font-size: 15px; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+  .page-sub { font-size: 16px; color: var(--text-muted); max-width: 650px; margin: 0 auto; line-height: 1.5; }
 
   /* Architecture Visualization */
   .architecture-container {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    max-width: 1080px;
-    margin: 40px auto 32px;
-    padding: 32px;
-    box-shadow: var(--shadow);
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    max-width: 1080px; margin: 40px auto 32px; padding: 32px; box-shadow: var(--shadow);
+    animation: fadeInUp 0.7s ease-out forwards;
   }
-  .arch-header { font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px; text-align: center;}
-  .arch-flow { display: flex; align-items: center; gap: 16px; justify-content: center; position: relative; }
+  .arch-header { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px; text-align: center;}
+  .arch-flow { display: flex; align-items: center; gap: 16px; justify-content: center; }
   .arch-stage {
-    flex: 1;
-    text-align: center;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    padding: 16px 12px;
-    background: var(--surface);
-    transition: all 0.3s;
-    position: relative;
-    max-width: 200px;
+    flex: 1; text-align: center; border: 2px solid var(--border); border-radius: 12px; padding: 20px 12px;
+    background: var(--surface); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); max-width: 190px;
   }
-  .arch-stage.active { border-color: var(--accent); background: #f0f7ff; box-shadow: 0 0 15px var(--accent-glow); transform: translateY(-2px); }
-  .arch-stage.completed { border-color: #10B981; background: #ecfdf5; }
-  .stage-num { display: none; }
-  .stage-icon { font-size: 24px; margin-bottom: 10px; opacity: 0.7; }
+  .arch-stage.active {
+    border-color: var(--accent); background: #f4f8ff;
+    transform: translateY(-4px); animation: activePulse 2s infinite; /* NEW: Pulsing animation */
+  }
+  .arch-stage.completed { border-color: #10B981; background: #ecfdf5; color: #047857; }
+  .stage-icon { font-size: 28px; margin-bottom: 12px; opacity: 0.5; transition: opacity 0.3s; }
   .arch-stage.active .stage-icon, .arch-stage.completed .stage-icon { opacity: 1; }
-  .stage-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .stage-title { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
   .stage-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
-  .arch-arrow { color: var(--border); font-size: 20px; font-weight: 800; transition: color 0.3s; }
+  .arch-arrow { color: var(--border); font-size: 20px; font-weight: 800; transition: color 0.4s; }
   .arch-stage.completed + .arch-arrow, .arch-stage.active + .arch-arrow { color: var(--accent); }
 
   /* Input Section */
-  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; animation: fadeInUp 0.8s ease-out forwards; }
   .drop-zone {
-    border: 2px dashed #D1D5DB;
-    border-radius: 16px;
-    padding: 56px 40px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    background: var(--surface);
-    margin-bottom: 20px;
+    border: 2px dashed #D1D5DB; border-radius: 16px; padding: 64px 40px; text-align: center; cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: var(--surface); margin-bottom: 20px;
   }
-  .drop-zone.dragover, .drop-zone:hover { border-color: var(--accent); background: #f8fbff; }
-  .drop-icon {
-    width: 60px; height: 60px;
-    margin: 0 auto 20px;
-    background: #f0f7ff;
-    border-radius: 16px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--accent); font-size: 26px; border: 1px solid #e0efff;
-  }
-  .drop-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
-  .drop-sub { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
-  .drop-formats { display: flex; gap: 8px; justify-content: center; margin-top: 18px; }
-  .fmt-tag { font-size: 10px; font-weight: 600; padding: 5px 12px; border-radius: 20px; background: #EEF2F6; color: var(--text-muted); }
+  .drop-zone.dragover, .drop-zone:hover { border-color: var(--accent); background: #f4f8ff; transform: scale(1.01); /* NEW: Smooth scaling on hover */ }
+  .drop-icon { width: 64px; height: 64px; margin: 0 auto 20px; background: #f0f7ff; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 28px; border: 1px solid #e0efff; transition: transform 0.3s; }
+  .drop-zone:hover .drop-icon { transform: translateY(-5px); }
+  .drop-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+  .drop-sub { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+  .drop-formats { display: flex; gap: 8px; justify-content: center; margin-top: 20px; }
+  .fmt-tag { font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 20px; background: #F3F4F6; color: var(--text-muted); transition: background 0.2s; }
+  .drop-zone:hover .fmt-tag { background: #E5E7EB; }
   
   #fileInput { display: none; }
-  .file-info { display: none; align-items: center; gap: 12px; padding: 12px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-top: 16px; font-size: 12px; box-shadow: var(--shadow); }
-  .file-info.visible { display: flex; }
-  .file-icon { font-size: 16px; }
-  .file-name { color: var(--text); font-weight: 600; flex: 1; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
-  .file-size { color: var(--text-muted); }
-  .remove-file { cursor: pointer; color: var(--text-muted); background: none; border: none; font-size: 14px; padding: 2px; }
+  .file-info { display: none; align-items: center; gap: 12px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-top: 16px; font-size: 13px; box-shadow: var(--shadow); }
+  .file-info.visible { display: flex; animation: fadeInUp 0.4s ease-out forwards; } /* NEW: Fade in */
+  .file-icon { font-size: 18px; }
+  .file-name { color: var(--text); font-weight: 700; flex: 1; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+  .file-size { color: var(--text-muted); font-weight: 500; }
+  .remove-file { cursor: pointer; color: var(--text-muted); background: none; border: none; font-size: 16px; padding: 4px; transition: color 0.2s; }
   .remove-file:hover { color: #EF4444; }
   
   .process-btn {
-    width: 100%; margin-top: 20px; padding: 16px; border: none; border-radius: 12px;
-    background: var(--accent); color: white;
-    font-size: 15px; font-weight: 700; cursor: pointer;
-    transition: all 0.25s;
-    box-shadow: 0 4px 6px -1px rgba(0, 86, 210, 0.2), 0 2px 4px -1px rgba(0, 86, 210, 0.1);
+    width: 100%; margin-top: 24px; padding: 18px; border: none; border-radius: 12px;
+    background: var(--accent); color: white; font-size: 16px; font-weight: 800; cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px var(--accent-glow);
   }
-  .process-btn:hover { background: #004dc0; transform: translateY(-1px); box-shadow: 0 10px 15px -3px rgba(0, 86, 210, 0.3), 0 4px 6px -2px rgba(0, 86, 210, 0.2); }
+  .process-btn:hover { background: #004dc0; transform: translateY(-2px); box-shadow: 0 10px 15px -3px var(--accent-glow); }
   .process-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
   
   .error-box { display: none; background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 12px; padding: 16px 20px; margin-top: 20px; font-size: 13px; color: #B91C1C; }
-  .error-box.visible { display: block; }
+  .error-box.visible { display: block; animation: fadeInUp 0.4s ease-out forwards; }
   
-  /* Loading Block */
   .loading { display: none; align-items: center; gap: 16px; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; margin-top: 24px; box-shadow: var(--shadow); }
-  .loading.visible { display: flex; }
+  .loading.visible { display: flex; animation: fadeInUp 0.4s ease-out forwards; }
   .spinner { width: 24px; height: 24px; border: 3px solid #E5E7EB; border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-text { font-size: 13px; color: var(--text-muted); }
-  .loading-text b { color: var(--accent); font-weight: 600; }
+  .loading-text { font-size: 14px; color: var(--text-muted); }
+  .loading-text b { color: var(--accent); font-weight: 700; }
 
   /* Results Section */
-  .results { display: none; margin-top: 48px; border-top: 1px solid var(--border); padding-top: 32px; }
-  .results.visible { display: block; }
+  .results { display: none; margin-top: 48px; border-top: 1px solid var(--border); padding-top: 40px; }
+  .results.visible { display: block; animation: fadeInUp 0.6s ease-out forwards; }
   .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-  .results-title { font-size: 20px; font-weight: 800; }
+  .results-title { font-size: 24px; font-weight: 800; }
   .results-title span { color: var(--accent); }
-  .raw-toggle { background: none; border: 1px solid var(--border); color: var(--text-muted); font-size: 12px; font-weight: 600; padding: 8px 16px; border-radius: 8px; cursor: pointer; }
-  .raw-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  .raw-toggle { background: none; border: 1px solid var(--border); color: var(--text-muted); font-size: 12px; font-weight: 700; padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+  .raw-toggle:hover { border-color: var(--accent); color: var(--accent); background: #f4f8ff; }
   
-  .summary-card { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 12px; padding: 20px; margin-bottom: 24px; font-size: 13px; line-height: 1.8; box-shadow: var(--shadow); }
-  .summary-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); margin-bottom: 12px; }
+  .summary-card { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 12px; padding: 24px; margin-bottom: 32px; font-size: 14px; line-height: 1.8; box-shadow: var(--shadow); }
+  .summary-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); margin-bottom: 12px; }
   
   .fields-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-  .field-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 24px; transition: all 0.2s; box-shadow: var(--shadow); }
-  .field-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-2px); }
-  .field-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-  .field-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .field-value { font-size: 16px; font-weight: 600; line-height: 1.4; color: var(--text); }
-  .field-value.empty { color: var(--text-muted); font-style: italic; font-weight: 400; font-size: 14px; }
   
-  /* Field Dot Colors */
+  .field-card { 
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--shadow); 
+    opacity: 0; /* Hidden initially for staggered animation */
+  }
+  .field-card:hover { border-color: var(--accent); box-shadow: var(--shadow-hover); transform: translateY(-4px); }
+  
+  .field-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .field-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .field-value { font-size: 18px; font-weight: 700; line-height: 1.4; color: var(--text); }
+  .field-value.empty { color: var(--text-muted); font-style: italic; font-weight: 500; font-size: 15px; }
+  
   .type-name .field-dot { background: #3B82F6; } .type-date .field-dot { background: #10B981; }
   .type-amount .field-dot { background: #F59E0B; } .type-contact .field-dot { background: #EF4444; }
   .type-id .field-dot { background: #8B5CF6; } .type-location .field-dot { background: #06B6D4; }
   .type-other .field-dot { background: #6B7280; }
 
-  .raw-output { display: none; background: #1F2937; color: #D1D5DB; border-radius: 10px; padding: 16px; margin-top: 16px; font-size: 11px; font-family: monospace; white-space: pre-wrap; max-height: 300px; overflow-y: auto; }
-  .raw-output.visible { display: block; }
+  .raw-output { display: none; background: #1F2937; color: #D1D5DB; border-radius: 12px; padding: 20px; margin-top: 20px; font-size: 12px; font-family: monospace; white-space: pre-wrap; max-height: 400px; overflow-y: auto; }
+  .raw-output.visible { display: block; animation: fadeInUp 0.4s ease-out forwards; }
 </style>
 </head>
 <body>
@@ -260,7 +235,7 @@
 
     <div class="loading" id="loading">
       <div class="spinner"></div>
-      <div class="loading-text">Transmission underway. Pipeline operations: <b>Polling status...</b></div>
+      <div class="loading-text">Transmission underway. Pipeline operations: <b id="loadingText">Analyzing structure...</b></div>
     </div>
 
     <div class="results" id="results">
@@ -279,7 +254,6 @@
 </div>
 
 <script>
-// State management
 let selectedFile = null;
 let rawJsonVisible = false;
 let currentStageId = null;
@@ -287,7 +261,6 @@ let currentStageId = null;
 const dropZone = document.getElementById('dropZone');
 const fileInput = document.getElementById('fileInput');
 
-// File drop zone event listeners
 dropZone.addEventListener('click', () => fileInput.click());
 dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
 dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
@@ -300,16 +273,13 @@ dropZone.addEventListener('drop', e => {
 fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
 document.getElementById('removeFile').addEventListener('click', clearFile);
 
-// Helper function to update the architecture visualization stages
 function updateArchStage(stageId, status = 'active') {
-    // Clean up previous active
     if (currentStageId) {
         document.getElementById(currentStageId).classList.remove('active');
         if (status !== 'completed') {
             document.getElementById(currentStageId).classList.add('completed');
         }
     }
-    
     currentStageId = stageId;
     const stageEl = document.getElementById(stageId);
     if (stageEl) {
@@ -322,11 +292,9 @@ function updateArchStage(stageId, status = 'active') {
     }
 }
 
-// Reset the entire visualization
 function resetArchVisualization() {
     currentStageId = null;
-    const stages = document.querySelectorAll('.arch-stage');
-    stages.forEach(s => s.classList.remove('active', 'completed'));
+    document.querySelectorAll('.arch-stage').forEach(s => s.classList.remove('active', 'completed'));
 }
 
 function handleFile(file) {
@@ -343,7 +311,6 @@ function handleFile(file) {
   document.getElementById('fileInfo').classList.add('visible');
   document.getElementById('processBtn').disabled = false;
   
-  // Update Visualization to Stage 1
   resetArchVisualization();
   updateArchStage('stage1');
 }
@@ -374,14 +341,23 @@ async function processDocument() {
   btn.disabled = true;
   document.getElementById('loading').classList.add('visible');
   document.getElementById('results').classList.remove('visible');
+  
+  const loadingText = document.getElementById('loadingText');
 
-  // Trigger Architecture Visualization Flow
+  // Dynamic Flow Simulation
   updateArchStage('stage2');
-  // Simulating routing logic - assuming both paths pulse during processing
-  setTimeout(() => updateArchStage('stage3'), 500);
-  setTimeout(() => updateArchStage('stage4'), 1200);
+  loadingText.textContent = "Routing and checking document structure...";
+  
+  const ext = selectedFile.name.split('.').pop().toLowerCase();
+  
+  // If it's an image or PDF, we highlight Stage 3 (OCR)
+  setTimeout(() => {
+      if (['pdf','png','jpg','jpeg'].includes(ext)) {
+          updateArchStage('stage3');
+          loadingText.textContent = "Digitizing via Sarvam OCR Engine...";
+      }
+  }, 1500);
 
-  // Package the raw file to transmit to the Python server
   const formData = new FormData();
   formData.append('document', selectedFile);
 
@@ -391,27 +367,26 @@ async function processDocument() {
       body: formData 
     });
 
+    // We know it reached the LLM when the API responds or takes a bit
+    updateArchStage('stage4');
+    loadingText.textContent = "LLM isolating properties and classifying data...";
+
     const rawResponse = await res.text();
     let data;
-    
-    try {
-      data = JSON.parse(rawResponse);
-    } catch (parseErr) {
-      throw new Error('Pipeline error: Render server connection timed out (Sarvam API is likely hanging).');
-    }
+    try { data = JSON.parse(rawResponse); } 
+    catch (parseErr) { throw new Error('Pipeline error: Render server connection timed out.'); }
 
-    if (!res.ok) throw new Error(data.error || 'Pipeline error: Server anomaly experienced during transmission.');
+    if (!res.ok) throw new Error(data.error || 'Pipeline error: Server anomaly experienced.');
 
-    // Finalize architecture visualization
     updateArchStage('stage5');
-    setTimeout(() => updateArchStage('stage5', 'completed'), 500);
+    loadingText.textContent = "Finalizing JSON payload...";
+    setTimeout(() => updateArchStage('stage5', 'completed'), 600);
 
     const rawText = data.choices?.[0]?.message?.content || '';
     renderResults(rawText);
 
   } catch (err) {
     showError('Process Execution Halted: ' + err.message);
-    // Mark failed step in visualization (optional, for demo)
     if (currentStageId) document.getElementById(currentStageId).style.borderColor = '#EF4444';
   } finally {
     document.getElementById('loading').classList.remove('visible');
@@ -419,17 +394,15 @@ async function processDocument() {
   }
 }
 
-// Logic for rendering the JSON results into the grid of cards
 function renderResults(rawText) {
   let parsed = null;
   try {
     let clean = rawText.replace(/```json/gi, '').replace(/```/g, '');
     const end = clean.lastIndexOf('}');
-    if (end === -1) throw new Error('Structure anomaly: No valid structural closing bracket matching syntax maps found.');
+    if (end === -1) throw new Error('Structure anomaly: No valid closing bracket found.');
 
     let start = clean.indexOf('{');
     let parseError = null;
-    
     while (start !== -1 && start < end) {
       try {
         parsed = JSON.parse(clean.substring(start, end + 1));
@@ -439,21 +412,25 @@ function renderResults(rawText) {
         start = clean.indexOf('{', start + 1);
       }
     }
-    if (!parsed) throw new Error('Structure anomaly: Valid application mapping scheme extraction missing. ' + (parseError ? parseError.message : ''));
+    if (!parsed) throw new Error('Structure anomaly: Valid scheme missing.');
   } catch(e) {
-    showError('Structure anomaly experienced during pipeline: ' + e.message);
+    showError('Structure anomaly experienced: ' + e.message);
     return;
   }
 
-  // Update DOM with parsed results
   document.getElementById('summaryText').textContent = parsed.summary || '—';
   document.getElementById('resultsDocType').textContent = parsed.document_type || 'Unknown Document Type';
 
   const grid = document.getElementById('fieldsGrid');
   grid.innerHTML = '';
-  (parsed.fields || []).forEach(f => {
+  
+  // NEW: Staggered entrance animation for cards
+  (parsed.fields || []).forEach((f, index) => {
     const card = document.createElement('div');
     card.className = `field-card type-${f.type || 'other'}`;
+    // Add dynamic delay based on the index of the item
+    card.style.animation = `fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.08}s forwards`;
+    
     const val = f.value !== null && f.value !== undefined && f.value !== '' ? f.value : null;
     card.innerHTML = `
       <div class="field-label"><span class="field-dot"></span>${escHtml(f.label || 'Field')}</div>
@@ -467,7 +444,6 @@ function renderResults(rawText) {
   document.getElementById('results').classList.add('visible');
 }
 
-// UI controls
 document.getElementById('rawToggle').addEventListener('click', () => {
   rawJsonVisible = !rawJsonVisible;
   document.getElementById('rawOutput').classList.toggle('visible', rawJsonVisible);

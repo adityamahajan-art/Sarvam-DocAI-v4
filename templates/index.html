@@ -26,10 +26,17 @@
     min-height: 100vh;
     padding-bottom: 80px;
   }
+  /* Grid background */
   body::before {
-    content: ''; position: fixed; inset: 0;
-    background-image: linear-gradient(rgba(0,86,210,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,86,210,0.03) 1px, transparent 1px);
-    background-size: 32px 32px; pointer-events: none; z-index: 0;
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,86,210,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,86,210,0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    z-index: 0;
   }
   .main-wrapper { position: relative; z-index: 1; }
   
@@ -38,58 +45,59 @@
     from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  @keyframes activePulse {
-    0% { box-shadow: 0 0 0 0 rgba(0, 86, 210, 0.3); }
-    70% { box-shadow: 0 0 0 12px rgba(0, 86, 210, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(0, 86, 210, 0); }
-  }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* Header */
-  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   .logo-area { display: flex; align-items: center; gap: 15px; }
-  .logo-img { height: 40px; /* FIXED: Increased logo size for better balance */ }
+  .logo-img { height: 40px; }
   .logo-text { font-size: 22px; font-weight: 800; border-left: 2px solid var(--border); padding-left: 12px; color: var(--text); }
-  .expert-btn { background: #111827; color: white; font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 30px; border: none; cursor: pointer; transition: transform 0.2s, background 0.2s; }
+  .expert-btn {
+    background: #111827;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+  }
   .expert-btn:hover { background: #1f2937; transform: translateY(-1px); }
   
-  .page-header { max-width: 1080px; margin: 64px auto 0; text-align: center; animation: fadeInUp 0.6s ease-out forwards; }
-  .page-title { font-size: 44px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; }
+  .page-header { max-width: 1080px; margin: 64px auto 40px; text-align: center; animation: fadeInUp 0.6s ease-out forwards; }
+  .page-title { font-size: 44px; font-weight: 800; line-height: 1.2; letter-spacing: -0.5px; }
   .page-title span { color: var(--accent); }
-  .page-sub { font-size: 16px; color: var(--text-muted); max-width: 650px; margin: 0 auto; line-height: 1.5; }
-
-  /* Architecture Visualization */
-  .architecture-container {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
-    max-width: 1080px; margin: 40px auto 32px; padding: 32px; box-shadow: var(--shadow);
-    animation: fadeInUp 0.7s ease-out forwards;
-  }
-  .arch-header { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px; text-align: center;}
-  .arch-flow { display: flex; align-items: center; gap: 16px; justify-content: center; }
-  .arch-stage {
-    flex: 1; text-align: center; border: 2px solid var(--border); border-radius: 12px; padding: 20px 12px;
-    background: var(--surface); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); max-width: 190px;
-  }
-  .arch-stage.active {
-    border-color: var(--accent); background: #f4f8ff;
-    transform: translateY(-4px); animation: activePulse 2s infinite; /* NEW: Pulsing animation */
-  }
-  .arch-stage.completed { border-color: #10B981; background: #ecfdf5; color: #047857; }
-  .stage-icon { font-size: 28px; margin-bottom: 12px; opacity: 0.5; transition: opacity 0.3s; }
-  .arch-stage.active .stage-icon, .arch-stage.completed .stage-icon { opacity: 1; }
-  .stage-title { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
-  .stage-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
-  .arch-arrow { color: var(--border); font-size: 20px; font-weight: 800; transition: color 0.4s; }
-  .arch-stage.completed + .arch-arrow, .arch-stage.active + .arch-arrow { color: var(--accent); }
 
   /* Input Section */
   .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; animation: fadeInUp 0.8s ease-out forwards; }
   .drop-zone {
-    border: 2px dashed #D1D5DB; border-radius: 16px; padding: 64px 40px; text-align: center; cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: var(--surface); margin-bottom: 20px;
+    border: 2px dashed #D1D5DB;
+    border-radius: 16px;
+    padding: 64px 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--surface);
+    margin-bottom: 20px;
   }
-  .drop-zone.dragover, .drop-zone:hover { border-color: var(--accent); background: #f4f8ff; transform: scale(1.01); /* NEW: Smooth scaling on hover */ }
-  .drop-icon { width: 64px; height: 64px; margin: 0 auto 20px; background: #f0f7ff; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 28px; border: 1px solid #e0efff; transition: transform 0.3s; }
+  .drop-zone.dragover, .drop-zone:hover { border-color: var(--accent); background: #f4f8ff; transform: scale(1.01); }
+  .drop-icon {
+    width: 64px; height: 64px;
+    margin: 0 auto 20px;
+    background: #f0f7ff;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent); font-size: 28px; border: 1px solid #e0efff;
+    transition: transform 0.3s;
+  }
   .drop-zone:hover .drop-icon { transform: translateY(-5px); }
   .drop-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
   .drop-sub { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
@@ -99,7 +107,7 @@
   
   #fileInput { display: none; }
   .file-info { display: none; align-items: center; gap: 12px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-top: 16px; font-size: 13px; box-shadow: var(--shadow); }
-  .file-info.visible { display: flex; animation: fadeInUp 0.4s ease-out forwards; } /* NEW: Fade in */
+  .file-info.visible { display: flex; animation: fadeInUp 0.4s ease-out forwards; }
   .file-icon { font-size: 18px; }
   .file-name { color: var(--text); font-weight: 700; flex: 1; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
   .file-size { color: var(--text-muted); font-weight: 500; }
@@ -108,7 +116,8 @@
   
   .process-btn {
     width: 100%; margin-top: 24px; padding: 18px; border: none; border-radius: 12px;
-    background: var(--accent); color: white; font-size: 16px; font-weight: 800; cursor: pointer;
+    background: var(--accent); color: white;
+    font-size: 16px; font-weight: 800; cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 6px -1px var(--accent-glow);
   }
@@ -118,6 +127,7 @@
   .error-box { display: none; background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 12px; padding: 16px 20px; margin-top: 20px; font-size: 13px; color: #B91C1C; }
   .error-box.visible { display: block; animation: fadeInUp 0.4s ease-out forwards; }
   
+  /* Loading Block */
   .loading { display: none; align-items: center; gap: 16px; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; margin-top: 24px; box-shadow: var(--shadow); }
   .loading.visible { display: flex; animation: fadeInUp 0.4s ease-out forwards; }
   .spinner { width: 24px; height: 24px; border: 3px solid #E5E7EB; border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -150,6 +160,7 @@
   .field-value { font-size: 18px; font-weight: 700; line-height: 1.4; color: var(--text); }
   .field-value.empty { color: var(--text-muted); font-style: italic; font-weight: 500; font-size: 15px; }
   
+  /* Field Dot Colors */
   .type-name .field-dot { background: #3B82F6; } .type-date .field-dot { background: #10B981; }
   .type-amount .field-dot { background: #F59E0B; } .type-contact .field-dot { background: #EF4444; }
   .type-id .field-dot { background: #8B5CF6; } .type-location .field-dot { background: #06B6D4; }
@@ -171,42 +182,6 @@
 
   <div class="page-header">
     <h1 class="page-title">Transform Documents into <span>Structured Intelligence</span></h1>
-    <p class="page-sub">Analyze Native & Scanned PDFs, Images, and Text files using the Ignosis 5-stage secure pipeline.</p>
-  </div>
-
-  <div class="architecture-container">
-    <div class="arch-header">Detailed Stages of System Architecture</div>
-    <div class="arch-flow" id="archFlow">
-      <div class="arch-stage" id="stage1">
-        <div class="stage-icon">📄</div>
-        <div class="stage-title">Input</div>
-        <div class="stage-desc">Document (File/Text)</div>
-      </div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-stage" id="stage2">
-        <div class="stage-icon">🧠</div>
-        <div class="stage-title">Smart Router</div>
-        <div class="stage-desc">Check Native vs Scanned</div>
-      </div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-stage" id="stage3">
-        <div class="stage-icon">⚙️</div>
-        <div class="stage-title">OCR Engine</div>
-        <div class="stage-desc">Digitize via Sarvam (Scanned)</div>
-      </div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-stage" id="stage4">
-        <div class="stage-icon">🔍</div>
-        <div class="stage-title">LLM Extractor</div>
-        <div class="stage-desc">Isolate properties via sarvam-m</div>
-      </div>
-      <div class="arch-arrow">→</div>
-      <div class="arch-stage" id="stage5">
-        <div class="stage-icon">💎</div>
-        <div class="stage-title">Output</div>
-        <div class="stage-desc">Structured JSON Data</div>
-      </div>
-    </div>
   </div>
 
   <div class="container">
@@ -256,7 +231,6 @@
 <script>
 let selectedFile = null;
 let rawJsonVisible = false;
-let currentStageId = null;
 
 const dropZone = document.getElementById('dropZone');
 const fileInput = document.getElementById('fileInput');
@@ -273,30 +247,6 @@ dropZone.addEventListener('drop', e => {
 fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
 document.getElementById('removeFile').addEventListener('click', clearFile);
 
-function updateArchStage(stageId, status = 'active') {
-    if (currentStageId) {
-        document.getElementById(currentStageId).classList.remove('active');
-        if (status !== 'completed') {
-            document.getElementById(currentStageId).classList.add('completed');
-        }
-    }
-    currentStageId = stageId;
-    const stageEl = document.getElementById(stageId);
-    if (stageEl) {
-        if (status === 'completed') {
-            stageEl.classList.remove('active');
-            stageEl.classList.add('completed');
-        } else {
-            stageEl.classList.add('active');
-        }
-    }
-}
-
-function resetArchVisualization() {
-    currentStageId = null;
-    document.querySelectorAll('.arch-stage').forEach(s => s.classList.remove('active', 'completed'));
-}
-
 function handleFile(file) {
   const allowed = ['pdf','png','jpg','jpeg','txt','html','json'];
   const ext = file.name.split('.').pop().toLowerCase();
@@ -310,9 +260,6 @@ function handleFile(file) {
   document.getElementById('fileSize').textContent = formatBytes(file.size);
   document.getElementById('fileInfo').classList.add('visible');
   document.getElementById('processBtn').disabled = false;
-  
-  resetArchVisualization();
-  updateArchStage('stage1');
 }
 
 function clearFile() {
@@ -322,7 +269,6 @@ function clearFile() {
   document.getElementById('processBtn').disabled = true;
   document.getElementById('results').classList.remove('visible');
   hideError();
-  resetArchVisualization();
 }
 
 function formatBytes(b) {
@@ -344,16 +290,13 @@ async function processDocument() {
   
   const loadingText = document.getElementById('loadingText');
 
-  // Dynamic Flow Simulation
-  updateArchStage('stage2');
   loadingText.textContent = "Routing and checking document structure...";
   
   const ext = selectedFile.name.split('.').pop().toLowerCase();
   
-  // If it's an image or PDF, we highlight Stage 3 (OCR)
+  // Update loading text based on file type
   setTimeout(() => {
       if (['pdf','png','jpg','jpeg'].includes(ext)) {
-          updateArchStage('stage3');
           loadingText.textContent = "Digitizing via Sarvam OCR Engine...";
       }
   }, 1500);
@@ -367,8 +310,6 @@ async function processDocument() {
       body: formData 
     });
 
-    // We know it reached the LLM when the API responds or takes a bit
-    updateArchStage('stage4');
     loadingText.textContent = "LLM isolating properties and classifying data...";
 
     const rawResponse = await res.text();
@@ -378,16 +319,13 @@ async function processDocument() {
 
     if (!res.ok) throw new Error(data.error || 'Pipeline error: Server anomaly experienced.');
 
-    updateArchStage('stage5');
     loadingText.textContent = "Finalizing JSON payload...";
-    setTimeout(() => updateArchStage('stage5', 'completed'), 600);
 
     const rawText = data.choices?.[0]?.message?.content || '';
     renderResults(rawText);
 
   } catch (err) {
     showError('Process Execution Halted: ' + err.message);
-    if (currentStageId) document.getElementById(currentStageId).style.borderColor = '#EF4444';
   } finally {
     document.getElementById('loading').classList.remove('visible');
     btn.disabled = false;
@@ -424,11 +362,9 @@ function renderResults(rawText) {
   const grid = document.getElementById('fieldsGrid');
   grid.innerHTML = '';
   
-  // NEW: Staggered entrance animation for cards
   (parsed.fields || []).forEach((f, index) => {
     const card = document.createElement('div');
     card.className = `field-card type-${f.type || 'other'}`;
-    // Add dynamic delay based on the index of the item
     card.style.animation = `fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.08}s forwards`;
     
     const val = f.value !== null && f.value !== undefined && f.value !== '' ? f.value : null;

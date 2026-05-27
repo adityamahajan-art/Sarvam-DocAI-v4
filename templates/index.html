@@ -181,7 +181,7 @@
   </header>
 
   <div class="page-header">
-    <h1 class="page-title">Transform Documents <br> into <span>Structured Intelligence</span></h1>
+    <h1 class="page-title">Transform Documents into <span>Structured Intelligence</span></h1>
   </div>
 
   <div class="container">
@@ -210,7 +210,7 @@
 
     <div class="loading" id="loading">
       <div class="spinner"></div>
-      <div class="loading-text">Transmission underway. Pipeline operations: <b id="loadingText">Analyzing structure...</b></div>
+      <div class="loading-text"><b>Transmission underway...</b></div>
     </div>
 
     <div class="results" id="results">
@@ -287,19 +287,6 @@ async function processDocument() {
   btn.disabled = true;
   document.getElementById('loading').classList.add('visible');
   document.getElementById('results').classList.remove('visible');
-  
-  const loadingText = document.getElementById('loadingText');
-
-  loadingText.textContent = "Routing and checking document structure...";
-  
-  const ext = selectedFile.name.split('.').pop().toLowerCase();
-  
-  // Update loading text based on file type
-  setTimeout(() => {
-      if (['pdf','png','jpg','jpeg'].includes(ext)) {
-          loadingText.textContent = "Digitizing via Sarvam OCR Engine...";
-      }
-  }, 1500);
 
   const formData = new FormData();
   formData.append('document', selectedFile);
@@ -310,16 +297,12 @@ async function processDocument() {
       body: formData 
     });
 
-    loadingText.textContent = "LLM isolating properties and classifying data...";
-
     const rawResponse = await res.text();
     let data;
     try { data = JSON.parse(rawResponse); } 
     catch (parseErr) { throw new Error('Pipeline error: Render server connection timed out.'); }
 
     if (!res.ok) throw new Error(data.error || 'Pipeline error: Server anomaly experienced.');
-
-    loadingText.textContent = "Finalizing JSON payload...";
 
     const rawText = data.choices?.[0]?.message?.content || '';
     renderResults(rawText);

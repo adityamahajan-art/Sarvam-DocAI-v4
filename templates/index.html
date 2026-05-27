@@ -3,362 +3,291 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DocIntel · Sarvam AI</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<title>IGNOSIS AI · Document Intelligence Engine</title>
+<link href="https://fonts.googleapis.com/css2?family=Geometric+Sans-Serif:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --surface2: #18181f;
-    --border: #2a2a38;
-    --accent: #6c63ff;
-    --accent2: #ff6b6b;
-    --accent3: #00d4aa;
-    --text: #e8e8f0;
-    --muted: #6b6b80;
-    --tag-bg: #1e1e2e;
+    --bg: #F9FAFB;
+    --surface: #FFFFFF;
+    --border: #E5E7EB;
+    --accent: #0056D2; /* Ignosis Primary Blue */
+    --accent-glow: rgba(0, 86, 210, 0.15);
+    --text: #111827;
+    --text-muted: #6B7280;
+    --tag-bg: #F3F4F6;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'DM Mono', monospace;
+    font-family: 'Geometric Sans-Serif', sans-serif;
     min-height: 100vh;
-    overflow-x: hidden;
+    padding-bottom: 80px;
   }
+  /* Grid background */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
     background-image:
-      linear-gradient(rgba(108,99,255,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(108,99,255,0.04) 1px, transparent 1px);
-    background-size: 48px 48px;
+      linear-gradient(rgba(0,86,210,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,86,210,0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
     pointer-events: none;
     z-index: 0;
   }
-  .container {
-    position: relative;
-    z-index: 1;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 40px 24px 80px;
-  }
+  .main-wrapper { position: relative; z-index: 1; }
   header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
     display: flex;
-    align-items: baseline;
-    gap: 16px;
-    margin-bottom: 48px;
+    align-items: center;
+    justify-content: space-between;
   }
-  .logo {
-    font-family: 'Syne', sans-serif;
-    font-size: 28px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    background: linear-gradient(135deg, #6c63ff, #00d4aa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .logo-area { display: flex; align-items: center; gap: 12px; }
+  .logo-img { height: 28px; }
+  .logo-text { font-size: 20px; font-weight: 800; }
+  .expert-btn {
+    background: #111827;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
   }
-  .logo-dot { color: var(--accent2); -webkit-text-fill-color: var(--accent2); }
-  .badge {
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
+  .page-header { max-width: 1080px; margin: 64px auto 0; text-align: center; }
+  .page-title { font-size: 40px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+  .page-title span { color: var(--accent); }
+  .page-sub { font-size: 15px; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+
+  /* Architecture Visualization */
+  .architecture-container {
+    background: var(--surface);
     border: 1px solid var(--border);
-    padding: 3px 10px;
-    border-radius: 20px;
-  }
-  .drop-zone {
-    border: 2px dashed var(--border);
     border-radius: 16px;
-    padding: 60px 40px;
+    max-width: 1080px;
+    margin: 40px auto 32px;
+    padding: 32px;
+    box-shadow: var(--shadow);
+  }
+  .arch-header { font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px; text-align: center;}
+  .arch-flow { display: flex; align-items: center; gap: 16px; justify-content: center; position: relative; }
+  .arch-stage {
+    flex: 1;
+    text-align: center;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 12px;
+    background: var(--surface);
+    transition: all 0.3s;
+    position: relative;
+    max-width: 200px;
+  }
+  .arch-stage.active { border-color: var(--accent); background: #f0f7ff; box-shadow: 0 0 15px var(--accent-glow); transform: translateY(-2px); }
+  .arch-stage.completed { border-color: #10B981; background: #ecfdf5; }
+  .stage-num { display: none; }
+  .stage-icon { font-size: 24px; margin-bottom: 10px; opacity: 0.7; }
+  .arch-stage.active .stage-icon, .arch-stage.completed .stage-icon { opacity: 1; }
+  .stage-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .stage-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+  .arch-arrow { color: var(--border); font-size: 20px; font-weight: 800; transition: color 0.3s; }
+  .arch-stage.completed + .arch-arrow, .arch-stage.active + .arch-arrow { color: var(--accent); }
+
+  /* Input Section */
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  .drop-zone {
+    border: 2px dashed #D1D5DB;
+    border-radius: 16px;
+    padding: 56px 40px;
     text-align: center;
     cursor: pointer;
     transition: all 0.25s ease;
     background: var(--surface);
-    position: relative;
-    overflow: hidden;
-  }
-  .drop-zone::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(0,212,170,0.08));
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .drop-zone.dragover, .drop-zone:hover {
-    border-color: var(--accent);
-    background: var(--surface2);
-  }
-  .drop-zone.dragover::before { opacity: 1; }
-  .drop-zone.dragover { transform: scale(1.01); }
-  .drop-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 20px;
-    background: linear-gradient(135deg, rgba(108,99,255,0.2), rgba(0,212,170,0.1));
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-  }
-  .drop-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-  .drop-sub {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-  .drop-formats {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    margin-top: 20px;
-    flex-wrap: wrap;
-  }
-  .fmt-tag {
-    font-size: 10px;
-    letter-spacing: 1px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    background: var(--tag-bg);
-  }
-  #fileInput { display: none; }
-  .file-info {
-    display: none;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 20px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    margin-top: 16px;
-    font-size: 12px;
-  }
-  .file-info.visible { display: flex; }
-  .file-name { color: var(--accent3); font-weight: 500; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .file-size { color: var(--muted); }
-  .remove-file {
-    cursor: pointer;
-    color: var(--muted);
-    background: none;
-    border: none;
-    font-size: 16px;
-    padding: 2px 6px;
-    border-radius: 4px;
-  }
-  .remove-file:hover { color: var(--accent2); }
-  .process-btn {
-    width: 100%;
-    margin-top: 20px;
-    padding: 16px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--accent), #8b83ff);
-    color: white;
-    font-family: 'Syne', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.25s;
-    position: relative;
-    overflow: hidden;
-  }
-  .process-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(108,99,255,0.4); }
-  .process-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-  .loading {
-    display: none;
-    align-items: center;
-    gap: 16px;
-    padding: 20px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    margin-top: 24px;
-  }
-  .loading.visible { display: flex; }
-  .spinner {
-    width: 24px;
-    height: 24px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-text { font-size: 13px; color: var(--muted); }
-  .loading-text span { color: var(--accent3); }
-  .results { display: none; margin-top: 32px; }
-  .results.visible { display: block; }
-  .results-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     margin-bottom: 20px;
   }
-  .results-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; }
-  .fields-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 12px;
+  .drop-zone.dragover, .drop-zone:hover { border-color: var(--accent); background: #f8fbff; }
+  .drop-icon {
+    width: 60px; height: 60px;
+    margin: 0 auto 20px;
+    background: #f0f7ff;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent); font-size: 26px; border: 1px solid #e0efff;
   }
-  .field-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px 20px;
-    transition: all 0.2s;
-  }
-  .field-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .field-label {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--muted);
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .field-dot { width: 6px; height: 6px; border-radius: 50%; }
-  .field-value {
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.4;
-  }
-  .field-value.empty { color: var(--muted); font-style: italic; font-weight: 400; font-family: 'DM Mono'; }
+  .drop-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .drop-sub { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .drop-formats { display: flex; gap: 8px; justify-content: center; margin-top: 18px; }
+  .fmt-tag { font-size: 10px; font-weight: 600; padding: 5px 12px; border-radius: 20px; background: #EEF2F6; color: var(--text-muted); }
   
-  /* Indicators */
-  .type-name .field-dot { background: #6c63ff; }
-  .type-date .field-dot { background: #00d4aa; }
-  .type-amount .field-dot { background: #ffd166; }
-  .type-contact .field-dot { background: #ff6b6b; }
-  .type-id .field-dot { background: #a8dadc; }
-  .type-location .field-dot { background: #06d6a0; }
-  .type-other .field-dot { background: #8ecae6; }
-
-  .summary-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 24px;
-    font-size: 13px;
-    line-height: 1.7;
+  #fileInput { display: none; }
+  .file-info { display: none; align-items: center; gap: 12px; padding: 12px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-top: 16px; font-size: 12px; box-shadow: var(--shadow); }
+  .file-info.visible { display: flex; }
+  .file-icon { font-size: 16px; }
+  .file-name { color: var(--text); font-weight: 600; flex: 1; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+  .file-size { color: var(--text-muted); }
+  .remove-file { cursor: pointer; color: var(--text-muted); background: none; border: none; font-size: 14px; padding: 2px; }
+  .remove-file:hover { color: #EF4444; }
+  
+  .process-btn {
+    width: 100%; margin-top: 20px; padding: 16px; border: none; border-radius: 12px;
+    background: var(--accent); color: white;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 4px 6px -1px rgba(0, 86, 210, 0.2), 0 2px 4px -1px rgba(0, 86, 210, 0.1);
   }
-  .summary-label {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--accent);
-    margin-bottom: 10px;
-  }
-  .error-box {
-    display: none;
-    background: rgba(255,107,107,0.08);
-    border: 1px solid rgba(255,107,107,0.3);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin-top: 16px;
-    font-size: 13px;
-    color: #ff9999;
-  }
+  .process-btn:hover { background: #004dc0; transform: translateY(-1px); box-shadow: 0 10px 15px -3px rgba(0, 86, 210, 0.3), 0 4px 6px -2px rgba(0, 86, 210, 0.2); }
+  .process-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+  
+  .error-box { display: none; background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 12px; padding: 16px 20px; margin-top: 20px; font-size: 13px; color: #B91C1C; }
   .error-box.visible { display: block; }
-  .raw-toggle {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    padding: 6px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
+  
+  /* Loading Block */
+  .loading { display: none; align-items: center; gap: 16px; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; margin-top: 24px; box-shadow: var(--shadow); }
+  .loading.visible { display: flex; }
+  .spinner { width: 24px; height: 24px; border: 3px solid #E5E7EB; border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { font-size: 13px; color: var(--text-muted); }
+  .loading-text b { color: var(--accent); font-weight: 600; }
+
+  /* Results Section */
+  .results { display: none; margin-top: 48px; border-top: 1px solid var(--border); padding-top: 32px; }
+  .results.visible { display: block; }
+  .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .results-title { font-size: 20px; font-weight: 800; }
+  .results-title span { color: var(--accent); }
+  .raw-toggle { background: none; border: 1px solid var(--border); color: var(--text-muted); font-size: 12px; font-weight: 600; padding: 8px 16px; border-radius: 8px; cursor: pointer; }
   .raw-toggle:hover { border-color: var(--accent); color: var(--accent); }
-  .raw-output {
-    display: none;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    margin-top: 16px;
-    font-size: 11px;
-    white-space: pre-wrap;
-    word-break: break-all;
-    max-height: 300px;
-    overflow-y: auto;
-  }
+  
+  .summary-card { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 12px; padding: 20px; margin-bottom: 24px; font-size: 13px; line-height: 1.8; box-shadow: var(--shadow); }
+  .summary-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); margin-bottom: 12px; }
+  
+  .fields-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .field-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 24px; transition: all 0.2s; box-shadow: var(--shadow); }
+  .field-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .field-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .field-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .field-value { font-size: 16px; font-weight: 600; line-height: 1.4; color: var(--text); }
+  .field-value.empty { color: var(--text-muted); font-style: italic; font-weight: 400; font-size: 14px; }
+  
+  /* Field Dot Colors */
+  .type-name .field-dot { background: #3B82F6; } .type-date .field-dot { background: #10B981; }
+  .type-amount .field-dot { background: #F59E0B; } .type-contact .field-dot { background: #EF4444; }
+  .type-id .field-dot { background: #8B5CF6; } .type-location .field-dot { background: #06B6D4; }
+  .type-other .field-dot { background: #6B7280; }
+
+  .raw-output { display: none; background: #1F2937; color: #D1D5DB; border-radius: 10px; padding: 16px; margin-top: 16px; font-size: 11px; font-family: monospace; white-space: pre-wrap; max-height: 300px; overflow-y: auto; }
   .raw-output.visible { display: block; }
 </style>
 </head>
 <body>
-<div class="container">
+<div class="main-wrapper">
   <header>
-    <div class="logo">DocIntel<span class="logo-dot">.</span></div>
-    <div class="badge">Powered by Sarvam AI</div>
+    <div class="logo-area">
+      <img src="https://framerusercontent.com/images/Xo3y3Uo4v9YyG6Lz2E8x3C7s3c.png" alt="Ignosis Logo" class="logo-img">
+      <div class="logo-text">DocIntel</div>
+    </div>
+    <button class="expert-btn">Talk to an Expert →</button>
   </header>
 
-  <div class="drop-zone" id="dropZone">
-    <div class="drop-icon">📄</div>
-    <div class="drop-title">Drop your document here</div>
-    <div class="drop-sub">Drag & drop a PDF, Image, or Text file here to begin</div>
-    <div class="drop-formats">
-      <span class="fmt-tag">PDF</span>
-      <span class="fmt-tag">IMAGE</span>
-      <span class="fmt-tag">TEXT</span>
-    </div>
-    <input type="file" id="fileInput" accept=".pdf,.png,.jpg,.jpeg,.txt,.html,.json">
+  <div class="page-header">
+    <h1 class="page-title">Transform Documents into <span>Structured Intelligence</span></h1>
+    <p class="page-sub">Analyze Native & Scanned PDFs, Images, and Text files using the Ignosis 5-stage secure pipeline.</p>
   </div>
 
-  <div class="file-info" id="fileInfo">
-    <span class="file-icon">📎</span>
-    <span class="file-name" id="fileName">—</span>
-    <span class="file-size" id="fileSize"></span>
-    <button class="remove-file" id="removeFile">✕</button>
+  <div class="architecture-container">
+    <div class="arch-header">Detailed Stages of System Architecture</div>
+    <div class="arch-flow" id="archFlow">
+      <div class="arch-stage" id="stage1">
+        <div class="stage-icon">📄</div>
+        <div class="stage-title">Input</div>
+        <div class="stage-desc">Document (File/Text)</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-stage" id="stage2">
+        <div class="stage-icon">🧠</div>
+        <div class="stage-title">Smart Router</div>
+        <div class="stage-desc">Check Native vs Scanned</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-stage" id="stage3">
+        <div class="stage-icon">⚙️</div>
+        <div class="stage-title">OCR Engine</div>
+        <div class="stage-desc">Digitize via Sarvam (Scanned)</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-stage" id="stage4">
+        <div class="stage-icon">🔍</div>
+        <div class="stage-title">LLM Extractor</div>
+        <div class="stage-desc">Isolate properties via sarvam-m</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-stage" id="stage5">
+        <div class="stage-icon">💎</div>
+        <div class="stage-title">Output</div>
+        <div class="stage-desc">Structured JSON Data</div>
+      </div>
+    </div>
   </div>
 
-  <div class="error-box" id="errorBox"></div>
-  <button class="process-btn" id="processBtn" disabled>⚡ Extract &amp; Classify via Secure Pipeline</button>
-
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
-    <div class="loading-text">Communicating with background server · Processing schemas…</div>
-  </div>
-
-  <div class="results" id="results">
-    <div class="results-header">
-      <div class="results-title">Extracted Fields</div>
-      <button class="raw-toggle" id="rawToggle">Show raw JSON</button>
+  <div class="container">
+    <div class="drop-zone" id="dropZone">
+      <div class="drop-icon">📤</div>
+      <div class="drop-title">Drop your document here</div>
+      <div class="drop-sub">Drag & drop a PDF, Image, or Text file export here to begin</div>
+      <div class="drop-formats">
+        <span class="fmt-tag">.PDF</span>
+        <span class="fmt-tag">.PNG / .JPG</span>
+        <span class="fmt-tag">.TXT</span>
+        <span class="fmt-tag">.HTML / .JSON</span>
+      </div>
+      <input type="file" id="fileInput" accept=".pdf,.png,.jpg,.jpeg,.txt,.html,.json">
     </div>
-    <div class="summary-box" id="summaryBox">
-      <div class="summary-label">▸ Document Summary &amp; Verification Warnings</div>
-      <div id="summaryText">—</div>
+
+    <div class="file-info" id="fileInfo">
+      <span class="file-icon">📎</span>
+      <span class="file-name" id="fileName">—</span>
+      <span class="file-size" id="fileSize"></span>
+      <button class="remove-file" id="removeFile">✕</button>
     </div>
-    <div class="fields-grid" id="fieldsGrid"></div>
-    <div class="raw-output" id="rawOutput"></div>
+
+    <div class="error-box" id="errorBox"></div>
+    <button class="process-btn" id="processBtn" disabled>⚡ Extract & Classify via Secure Pipeline</button>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <div class="loading-text">Transmission underway. Pipeline operations: <b>Polling status...</b></div>
+    </div>
+
+    <div class="results" id="results">
+      <div class="results-header">
+        <div class="results-title">Pipeline Output · <span id="resultsDocType">Document Intelligence</span></div>
+        <button class="raw-toggle" id="rawToggle">Show raw JSON</button>
+      </div>
+      <div class="summary-card" id="summaryBox">
+        <div class="summary-label">Document Summary & Verification Warnings</div>
+        <div id="summaryText">—</div>
+      </div>
+      <div class="fields-grid" id="fieldsGrid"></div>
+      <div class="raw-output" id="rawOutput"></div>
+    </div>
   </div>
 </div>
 
 <script>
+// State management
 let selectedFile = null;
 let rawJsonVisible = false;
+let currentStageId = null;
 
 const dropZone = document.getElementById('dropZone');
 const fileInput = document.getElementById('fileInput');
 
+// File drop zone event listeners
 dropZone.addEventListener('click', () => fileInput.click());
 dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
 dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
@@ -371,19 +300,52 @@ dropZone.addEventListener('drop', e => {
 fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
 document.getElementById('removeFile').addEventListener('click', clearFile);
 
+// Helper function to update the architecture visualization stages
+function updateArchStage(stageId, status = 'active') {
+    // Clean up previous active
+    if (currentStageId) {
+        document.getElementById(currentStageId).classList.remove('active');
+        if (status !== 'completed') {
+            document.getElementById(currentStageId).classList.add('completed');
+        }
+    }
+    
+    currentStageId = stageId;
+    const stageEl = document.getElementById(stageId);
+    if (stageEl) {
+        if (status === 'completed') {
+            stageEl.classList.remove('active');
+            stageEl.classList.add('completed');
+        } else {
+            stageEl.classList.add('active');
+        }
+    }
+}
+
+// Reset the entire visualization
+function resetArchVisualization() {
+    currentStageId = null;
+    const stages = document.querySelectorAll('.arch-stage');
+    stages.forEach(s => s.classList.remove('active', 'completed'));
+}
+
 function handleFile(file) {
   const allowed = ['pdf','png','jpg','jpeg','txt','html','json'];
   const ext = file.name.split('.').pop().toLowerCase();
   if (!allowed.includes(ext)) {
-    showError('Please upload a PDF, Image, or Text document.');
+    showError('Process Execution Halted: Please upload a PDF, Image, or Text document.');
     return;
   }
   hideError();
-  selectedFile = file; // Store the raw file object instead of text
+  selectedFile = file; 
   document.getElementById('fileName').textContent = file.name;
   document.getElementById('fileSize').textContent = formatBytes(file.size);
   document.getElementById('fileInfo').classList.add('visible');
   document.getElementById('processBtn').disabled = false;
+  
+  // Update Visualization to Stage 1
+  resetArchVisualization();
+  updateArchStage('stage1');
 }
 
 function clearFile() {
@@ -393,6 +355,7 @@ function clearFile() {
   document.getElementById('processBtn').disabled = true;
   document.getElementById('results').classList.remove('visible');
   hideError();
+  resetArchVisualization();
 }
 
 function formatBytes(b) {
@@ -412,6 +375,12 @@ async function processDocument() {
   document.getElementById('loading').classList.add('visible');
   document.getElementById('results').classList.remove('visible');
 
+  // Trigger Architecture Visualization Flow
+  updateArchStage('stage2');
+  // Simulating routing logic - assuming both paths pulse during processing
+  setTimeout(() => updateArchStage('stage3'), 500);
+  setTimeout(() => updateArchStage('stage4'), 1200);
+
   // Package the raw file to transmit to the Python server
   const formData = new FormData();
   formData.append('document', selectedFile);
@@ -419,7 +388,7 @@ async function processDocument() {
   try {
     const res = await fetch('/api/extract', {
       method: 'POST',
-      body: formData // Notice: no headers are needed for FormData!
+      body: formData 
     });
 
     const rawResponse = await res.text();
@@ -428,28 +397,35 @@ async function processDocument() {
     try {
       data = JSON.parse(rawResponse);
     } catch (parseErr) {
-      throw new Error('Render server connection timed out (API is likely hanging).');
+      throw new Error('Pipeline error: Render server connection timed out (Sarvam API is likely hanging).');
     }
 
-    if (!res.ok) throw new Error(data.error || 'Server error experienced during transmission pipeline.');
+    if (!res.ok) throw new Error(data.error || 'Pipeline error: Server anomaly experienced during transmission.');
+
+    // Finalize architecture visualization
+    updateArchStage('stage5');
+    setTimeout(() => updateArchStage('stage5', 'completed'), 500);
 
     const rawText = data.choices?.[0]?.message?.content || '';
     renderResults(rawText);
 
   } catch (err) {
     showError('Process Execution Halted: ' + err.message);
+    // Mark failed step in visualization (optional, for demo)
+    if (currentStageId) document.getElementById(currentStageId).style.borderColor = '#EF4444';
   } finally {
     document.getElementById('loading').classList.remove('visible');
     btn.disabled = false;
   }
 }
 
+// Logic for rendering the JSON results into the grid of cards
 function renderResults(rawText) {
   let parsed = null;
   try {
     let clean = rawText.replace(/```json/gi, '').replace(/```/g, '');
     const end = clean.lastIndexOf('}');
-    if (end === -1) throw new Error('No valid structural closing bracket matching syntax maps found.');
+    if (end === -1) throw new Error('Structure anomaly: No valid structural closing bracket matching syntax maps found.');
 
     let start = clean.indexOf('{');
     let parseError = null;
@@ -463,14 +439,15 @@ function renderResults(rawText) {
         start = clean.indexOf('{', start + 1);
       }
     }
-    if (!parsed) throw new Error('Valid application mapping scheme extraction missing. ' + (parseError ? parseError.message : ''));
+    if (!parsed) throw new Error('Structure anomaly: Valid application mapping scheme extraction missing. ' + (parseError ? parseError.message : ''));
   } catch(e) {
-    showError('Output rendering error: ' + e.message);
+    showError('Structure anomaly experienced during pipeline: ' + e.message);
     return;
   }
 
+  // Update DOM with parsed results
   document.getElementById('summaryText').textContent = parsed.summary || '—';
-  document.querySelector('.results-title').textContent = `Extracted Fields · ${parsed.document_type || 'Document'}`;
+  document.getElementById('resultsDocType').textContent = parsed.document_type || 'Unknown Document Type';
 
   const grid = document.getElementById('fieldsGrid');
   grid.innerHTML = '';
@@ -490,6 +467,7 @@ function renderResults(rawText) {
   document.getElementById('results').classList.add('visible');
 }
 
+// UI controls
 document.getElementById('rawToggle').addEventListener('click', () => {
   rawJsonVisible = !rawJsonVisible;
   document.getElementById('rawOutput').classList.toggle('visible', rawJsonVisible);

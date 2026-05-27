@@ -49,6 +49,9 @@
 
   /* Header */
   header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
     background: var(--surface);
     border-bottom: 1px solid var(--border);
     padding: 16px 32px;
@@ -56,6 +59,7 @@
     align-items: center;
     justify-content: space-between;
   }
+  
   .logo-area { display: flex; align-items: center; gap: 15px; }
   .logo-img { height: 40px; }
   .logo-text { font-size: 22px; font-weight: 800; border-left: 2px solid var(--border); padding-left: 12px; color: var(--text); }

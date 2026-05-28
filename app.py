@@ -8,7 +8,7 @@ from pypdf import PdfReader, PdfWriter
 
 app = Flask(__name__, template_folder='templates')
 
-SARVAM_API_KEY = os.environ.get('SARVAM_API_KEY', 'sk_z6t6agdi_OaYgGFwEn1LyWSs9DliKkoK2')
+SARVAM_API_KEY = os.environ.get('SARVAM_API_KEY', 'sk_b4xkw0ro_M4Da63fbUA5nru1PWhzYKQVe')
 SARVAM_CHAT_ENDPOINT = 'https://api.sarvam.ai/v1/chat/completions'
 SARVAM_DOC_ENDPOINT = 'https://api.sarvam.ai/doc-digitization/job/v1'
 
